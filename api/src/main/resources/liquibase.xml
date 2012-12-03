@@ -31,5 +31,35 @@
 			</column>
         </createTable>
     </changeSet>
-        
+
+    <changeSet id="20121203-1500" author="jkeiper">
+        <preConditions onFail="MARK_RAN">
+            <not><tableExists tableName="calculation_experimental" /></not>
+        </preConditions>
+        <comment>
+            Adding calculation_experimental table
+        </comment>
+        <createTable tableName="calculation_experimental">
+            <column name="calculation_experimental_id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="person_id" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="class_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="parameter_values" type="varchar(512)" />
+            <column name="result" type="text" />
+            <column name="date_now" type="datetime" >
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_updated" type="datetime" >
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="person_id_for_calculation_experimental"
+                                 baseTableName="calculation_experimental" baseColumnNames="person_id"
+                                 referencedTableName="person" referencedColumnNames="person_id"/>
+    </changeSet>
 </databaseChangeLog>
