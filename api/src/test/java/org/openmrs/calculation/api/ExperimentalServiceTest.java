@@ -1,46 +1,56 @@
-package org.openmrs.calculation.patient;
+package org.openmrs.calculation.api;
 
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.api.context.Context;
+import org.openmrs.calculation.patient.PatientCalculationContext;
+import org.openmrs.calculation.patient.SimplePersistablePatientCalculation;
 import org.openmrs.calculation.result.CalculationResult;
+import org.openmrs.calculation.result.CalculationResultMap;
+import org.openmrs.calculation.result.PersistedPatientResultMap;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Test class for {@link ExperimentalService}
+ * Test class for {@link org.openmrs.calculation.api.ExperimentalService}
  */
 public class ExperimentalServiceTest extends BaseModuleContextSensitiveTest {
 	/**
 	 * @verifies save a result
-	 * @see ExperimentalService#persistResult(Class, Integer, java.util.Map, org.openmrs.calculation.result.CalculationResult, PatientCalculationContext)
+	 * @see org.openmrs.calculation.api.ExperimentalService#persistResult(Class, Integer, java.util.Map, org.openmrs.calculation.result.CalculationResult, org.openmrs.calculation.patient.PatientCalculationContext)
 	 */
 	@Test
 	public void persistResult_shouldSaveAResult() throws Exception {
-		PatientCalculationContext context = new TestPatientCalculationContext();
-		SimplePersistablePatientCalculation calculation = new SimplePersistablePatientCalculation();
-		Map<String, Object> parameterValues = null;
-		CalculationResult expected = calculation.evaluate(8, parameterValues, context);
 		ExperimentalService service = Context.getService(ExperimentalService.class);
+
+		PatientCalculationContext context = new TestPatientCalculationContext();
+		SimplePersistablePatientCalculation patientCalculation = new SimplePersistablePatientCalculation();
+		Map<String, Object> parameterValues = null;
+
+		CalculationResult expected = patientCalculation.evaluateSinglePatient(8, parameterValues, context);
 
 		service.persistResult(SimplePersistablePatientCalculation.class, 8, parameterValues, expected, context);
 		Context.flushSession();
-		CalculationResult actual = service.loadResult(SimplePersistablePatientCalculation.class, 8, parameterValues, context);
+		PersistedPatientResultMap actual = service.loadResults(SimplePersistablePatientCalculation.class, Collections.singletonList(8), parameterValues, context);
 
-		Assert.assertEquals(expected.toString(), actual.toString());
+		Assert.assertEquals(1, actual.size());
+
+		CalculationResult actualResult = patientCalculation.deserialize(actual.get(8).getResult());
+		Assert.assertEquals(expected.toString(), actualResult.toString());
 	}
 
 	/**
 	 * @verifies load a result
-	 * @see ExperimentalService#loadResult(Class, Integer, java.util.Map, PatientCalculationContext)
+	 * @see ExperimentalService#loadResults(Class, java.util.Collection, java.util.Map, PatientCalculationContext)
 	 */
 	@Test
 	@Ignore
-	public void loadResult_shouldLoadAResult() throws Exception {
+	public void loadResults_shouldLoadAResult() throws Exception {
 		// @see #saveResult_shouldSaveAResult()
 	}
 

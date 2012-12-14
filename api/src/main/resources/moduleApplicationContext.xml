@@ -16,7 +16,7 @@
   		    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-  		    
+
 	<context:component-scan base-package="@MODULE_PACKAGE@" />
 
 	<!-- Services accessible via Context.getService() -->
@@ -41,7 +41,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
@@ -52,7 +52,7 @@
 					</property>
 					<property name="target">
 						<bean class="org.openmrs.${project.parent.artifactId}.api.CalculationRegistrationServiceImpl">
-							<property name="dao" ref="calculationRegistrationDao" /> 
+							<property name="dao" ref="calculationRegistrationDao" />
 						</bean>
 					</property>
 					<property name="preInterceptors">
@@ -65,37 +65,40 @@
 			</list>
 		</property>
 	</bean>
-	
-	<bean id="calculationRegistrationDao" class="org.openmrs.${project.parent.artifactId}.db.HibernateCalculationRegistrationDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+
+    <bean id="calculationRegistrationDao" class="org.openmrs.${project.parent.artifactId}.db.HibernateCalculationRegistrationDAO">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 
     <bean parent="serviceContext">
         <property name="moduleService">
             <list>
-                <value>org.openmrs.${project.parent.artifactId}.patient.ExperimentalService</value>
-                <bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-                    <property name="transactionManager">
-                        <ref bean="transactionManager" />
-                    </property>
-                    <property name="target">
-                        <bean class="org.openmrs.${project.parent.artifactId}.patient.ExperimentalServiceImpl">
-                            <property name="dao" ref="experimentalDao" />
-                        </bean>
-                    </property>
-                    <property name="preInterceptors">
-                        <ref bean="serviceInterceptors" />
-                    </property>
-                    <property name="transactionAttributeSource">
-                        <ref bean="transactionAttributeSource" />
-                    </property>
-                </bean>
+                <value>org.openmrs.${project.parent.artifactId}.api.ExperimentalService</value>
+                <ref bean="experimentalService" />
             </list>
         </property>
     </bean>
 
-    <bean id="experimentalDao" class="org.openmrs.${project.parent.artifactId}.db.HibernateExperimentalDAO">
-        <property name="sessionFactory" ref="sessionFactory" />
+    <bean id="experimentalService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager"/>
+        </property>
+        <property name="target">
+            <bean class="org.openmrs.${project.parent.artifactId}.api.ExperimentalServiceImpl">
+                <property name="persistedPatientResultDAO">
+                    <bean class="org.openmrs.${project.parent.artifactId}.db.HibernatePersistedPatientResultDAO">
+                        <property name="sessionFactory" ref="sessionFactory" />
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors" />
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource" />
+        </property>
     </bean>
 
 </beans>
+
