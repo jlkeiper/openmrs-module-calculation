@@ -6,6 +6,6 @@
 <hibernate-configuration>
     <session-factory>
        <mapping resource="CalculationRegistration.hbm.xml" />
-       <mapping resource="ExperimentalItem.hbm.xml" />
+       <mapping resource="PersistedPatientResult.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

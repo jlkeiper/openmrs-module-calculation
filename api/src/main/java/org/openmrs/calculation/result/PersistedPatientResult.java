@@ -1,14 +1,13 @@
-package org.openmrs.calculation.patient;
-
-import org.openmrs.BaseOpenmrsObject;
+package org.openmrs.calculation.result;
 
 import java.util.Date;
 
 /**
- * Simple model for representing a persisted PatientCalculation result via Hibernate
+ * Simple model for representing a persisted {@link org.openmrs.calculation.result.CalculationResult} result via Hibernate
  */
-public class ExperimentalItem {
-	private Integer experimentalItemId;
+public class PersistedPatientResult {
+
+	private Integer persistedPatientResultId;
 	private Integer patientId;
 	private String className;
 	private String parameterValues;
@@ -16,12 +15,12 @@ public class ExperimentalItem {
 	private Date dateUpdated;
 	private String result;
 
-	public Integer getExperimentalItemId() {
-		return experimentalItemId;
+	public Integer getPersistedPatientResultId() {
+		return persistedPatientResultId;
 	}
 
-	public void setExperimentalItemId(Integer experimentalItemId) {
-		this.experimentalItemId = experimentalItemId;
+	public void setPersistedPatientResultId(Integer persistedPatientResultId) {
+		this.persistedPatientResultId = persistedPatientResultId;
 	}
 
 	public Integer getPatientId() {

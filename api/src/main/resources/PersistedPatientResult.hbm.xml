@@ -3,14 +3,14 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
-<hibernate-mapping package="org.openmrs.calculation.patient">
-	<class name="ExperimentalItem" table="calculation_experimental">
-        <id name="experimentalItemId" type="int" column="calculation_experimental_id">
+<hibernate-mapping package="org.openmrs.calculation.result">
+	<class name="PersistedPatientResult" table="calculation_patient_result">
+        <id name="persistedPatientResultId" type="int" column="calculation_patient_result_id">
             <generator class="native">
-                <param name="sequence">calculation_experimental_id_seq</param>
+                <param name="sequence">calculation_patient_result_id_seq</param>
             </generator>
         </id>
-        <discriminator column="calculation_experimental_id" insert="false" />
+        <discriminator column="calculation_patient_result_id" insert="false" />
         <property name="patientId" type="java.lang.Integer" column="patient_id" not-null="true" />
         <property name="className" type="java.lang.String" column="class_name" length="255" />
         <property name="parameterValues" type="java.lang.String" column="parameter_values" length="512" />

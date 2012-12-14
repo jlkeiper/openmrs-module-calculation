@@ -34,13 +34,13 @@
 
     <changeSet id="20121203-1500" author="jkeiper">
         <preConditions onFail="MARK_RAN">
-            <not><tableExists tableName="calculation_experimental" /></not>
+            <not><tableExists tableName="calculation_patient_result" /></not>
         </preConditions>
         <comment>
-            Adding calculation_experimental table
+            Adding calculation_patient_result table
         </comment>
-        <createTable tableName="calculation_experimental">
-            <column name="calculation_experimental_id" autoIncrement="true" type="int">
+        <createTable tableName="calculation_patient_result">
+            <column name="calculation_patient_result_id" autoIncrement="true" type="int">
                 <constraints nullable="false" primaryKey="true" />
             </column>
             <column name="person_id" type="int">
@@ -58,8 +58,8 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <addForeignKeyConstraint constraintName="person_id_for_calculation_experimental"
-                                 baseTableName="calculation_experimental" baseColumnNames="person_id"
+        <addForeignKeyConstraint constraintName="person_id_for_calculation_patient_result"
+                                 baseTableName="calculation_patient_result" baseColumnNames="person_id"
                                  referencedTableName="person" referencedColumnNames="person_id"/>
     </changeSet>
 </databaseChangeLog>
