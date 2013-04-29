@@ -37,7 +37,7 @@ public class SimplePersistablePatientCalculation extends PersistableCalculation 
 	 */
 	@Override
 	public CalculationResultMap evaluate(Collection<Integer> cohort, Map<String, Object> parameterValues, PatientCalculationContext context) {
-		return null;
+		return doEvaluate(cohort, parameterValues, context);
 	}
 
 	/**
